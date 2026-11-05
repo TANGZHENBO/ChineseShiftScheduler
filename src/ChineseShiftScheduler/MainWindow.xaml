@@ -1,0 +1,13 @@
+<Window x:Class="ChineseShiftScheduler.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="智能循环排班日历" Height="800" Width="1450" MinHeight="600" MinWidth="1000" WindowStartupLocation="CenterScreen" Background="#F3F6F9">
+ <DockPanel>
+  <Border DockPanel.Dock="Top" Background="#079EAA" Padding="18,11"><DockPanel><StackPanel><TextBlock Text="智能循环排班日历" Foreground="White" FontSize="22" FontWeight="Bold"/><TextBlock Text="Chinese Shift Scheduler" Foreground="#D9FFFF" FontSize="11"/></StackPanel><TextBlock DockPanel.Dock="Right" Text="四天循环：白班 · 夜班 · 休息 · 休息" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Right"/></DockPanel></Border>
+  <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="180"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+   <Border Background="White" BorderBrush="#DCE4EC" BorderThickness="0,0,1,0"><StackPanel Margin="12"><TextBlock Text="排班管理" FontSize="18" FontWeight="Bold" Margin="8,16"/><Button Content="月度排班"/><Button Content="新增员工" Click="AddEmployee_Click"/><Button Content="编辑首位员工" Background="#64748B" Click="EditEmployee_Click"/><Button Content="删除首位员工" Background="#64748B" Click="DeleteEmployee_Click"/><Separator Margin="5,18"/><TextBlock Text="默认循环" FontWeight="Bold" Margin="8"/><TextBlock Text="第1天  白班" Foreground="#2879E8" Margin="8,4"/><TextBlock Text="第2天  夜班" Foreground="#7739D9" Margin="8,4"/><TextBlock Text="第3天  休息" Foreground="#159B72" Margin="8,4"/><TextBlock Text="第4天  休息" Foreground="#159B72" Margin="8,4"/></StackPanel></Border>
+   <Grid Grid.Column="1" Margin="16"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <DockPanel Margin="0,0,0,12"><StackPanel Orientation="Horizontal"><Button Content="◀ 上个月" Click="Previous_Click" Background="#64748B"/><TextBlock x:Name="MonthLabel" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0"/><Button Content="下个月 ▶" Click="Next_Click" Background="#64748B"/><Button Content="今天" Click="Today_Click" Background="#64748B"/></StackPanel><StackPanel Orientation="Horizontal" DockPanel.Dock="Right"><Button Content="自动生成" Click="Generate_Click"/><Button Content="导出 CSV" Click="Export_Click" Background="#2563EB"/></StackPanel></DockPanel>
+    <Border Grid.Row="1" Background="White" BorderBrush="#DCE4EC" BorderThickness="1" CornerRadius="8"><ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"><Grid x:Name="CalendarGrid" Margin="1"/></ScrollViewer></Border>
+    <TextBlock x:Name="StatusText" Grid.Row="2" Text="就绪。单击排班格可调班，右键菜单可恢复循环。" Foreground="#64748B" Margin="4,10"/>
+   </Grid>
+  </Grid>
+ </DockPanel>
+</Window>
