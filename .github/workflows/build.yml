@@ -9,7 +9,7 @@ permissions:
   contents: read
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
@@ -19,9 +19,11 @@ jobs:
         run: dotnet restore src/ChineseShiftScheduler/ChineseShiftScheduler.csproj
       - name: 编译检查
         run: dotnet build src/ChineseShiftScheduler/ChineseShiftScheduler.csproj -c Release --no-restore
-      - name: 上传编译产物
+      - name: 发布 Windows x64 自包含程序（无需单独安装 .NET）
+        run: dotnet publish src/ChineseShiftScheduler/ChineseShiftScheduler.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish
+      - name: 上传 Windows x64 可运行程序
         uses: actions/upload-artifact@v4
         with:
-          name: ChineseShiftScheduler-build
-          path: src/ChineseShiftScheduler/bin/Release/net8.0-windows/
+          name: ChineseShiftScheduler-win-x64
+          path: publish/
           if-no-files-found: error
