@@ -12,5 +12,5 @@ public sealed class ScheduleStore {
  public string? Override(int id,DateTime d){using var c=Open();using var q=c.CreateCommand();q.CommandText="SELECT ShiftName FROM Overrides WHERE EmployeeId=$i AND WorkDate=$d";q.Parameters.AddWithValue("$i",id);q.Parameters.AddWithValue("$d",d.ToString("yyyy-MM-dd"));return q.ExecuteScalar() as string;}
  public void SetOverride(int id,DateTime d,string s){using var c=Open();using var q=c.CreateCommand();q.CommandText="INSERT INTO Overrides VALUES($i,$d,$s) ON CONFLICT(EmployeeId,WorkDate) DO UPDATE SET ShiftName=excluded.ShiftName";q.Parameters.AddWithValue("$i",id);q.Parameters.AddWithValue("$d",d.ToString("yyyy-MM-dd"));q.Parameters.AddWithValue("$s",s);q.ExecuteNonQuery();}
  public void ClearOverride(int id,DateTime d){using var c=Open();using var q=c.CreateCommand();q.CommandText="DELETE FROM Overrides WHERE EmployeeId=$i AND WorkDate=$d";q.Parameters.AddWithValue("$i",id);q.Parameters.AddWithValue("$d",d.ToString("yyyy-MM-dd"));q.ExecuteNonQuery();}
- public static string Cycle(DateTime date,DateTime start){int n=(int)(date.Date-start.Date).TotalDays;return ((n%4)+4)%4 switch {0=>"白班",1=>"夜班",_=>"休息"};}
+ public static string Cycle(DateTime date,DateTime start){int n=(int)(date.Date-start.Date).TotalDays;return (((n%4)+4)%4) switch {0=>"白班",1=>"夜班",_=>"休息"};}
 }
