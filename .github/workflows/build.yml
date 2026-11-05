@@ -1,0 +1,27 @@
+name: Windows Build
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: 还原依赖
+        run: dotnet restore src/ChineseShiftScheduler/ChineseShiftScheduler.csproj
+      - name: 编译检查
+        run: dotnet build src/ChineseShiftScheduler/ChineseShiftScheduler.csproj -c Release --no-restore
+      - name: 上传编译产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: ChineseShiftScheduler-build
+          path: src/ChineseShiftScheduler/bin/Release/net8.0-windows/
+          if-no-files-found: error
