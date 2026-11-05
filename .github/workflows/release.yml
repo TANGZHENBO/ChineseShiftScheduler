@@ -1,0 +1,28 @@
+name: Publish Release
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: 还原依赖
+        run: dotnet restore src/ChineseShiftScheduler/ChineseShiftScheduler.csproj
+      - name: 发布 Windows x64 自包含程序
+        run: dotnet publish src/ChineseShiftScheduler/ChineseShiftScheduler.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish
+      - name: 打包 ZIP
+        run: Compress-Archive -Path publish/* -DestinationPath ChineseShiftScheduler-win-x64.zip
+      - name: 创建 GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ChineseShiftScheduler ${{ github.ref_name }}
+          generate_release_notes: true
+          files: ChineseShiftScheduler-win-x64.zip
